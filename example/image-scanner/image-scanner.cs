@@ -39,7 +39,7 @@ namespace Example.ImageScanner
 			List<string> files = new List<string>();
 			
 			//Copy arguments into files (ignore this part)
-			for(int i = 1; i < args.Length; i++){
+			for(int i = 0; i < args.Length; i++){
 				if(args[i] == "--help" || args[i] == "-h")
 					Console.WriteLine("Usage ./{0} [file1] [file2] [file3] ...", args[0]);
 				else
