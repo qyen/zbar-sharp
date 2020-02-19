@@ -45,21 +45,23 @@ namespace ZBar
 			//Get data from the symbol
 			IntPtr pData = zbar_symbol_get_data(symbol);
 			int length = (int)zbar_symbol_get_data_length(symbol);
-			this.data = Marshal.PtrToStringAnsi(pData, length);
-			
+			this.rawData = new byte[length];
+            Marshal.Copy(pData, this.rawData, 0, length);
+
+
 			//Get the other fields
 			this.type = (SymbolType)zbar_symbol_get_type(symbol);
 			this.quality = zbar_symbol_get_quality(symbol);
 			this.count = zbar_symbol_get_count(symbol);
 		}
-		
-		private string data;
+
+        private byte[] rawData;
 		private int quality;
 		private int count;
 		private SymbolType type;
 
 		public override string ToString(){
-			return this.type.ToString() + " " + this.data;
+			return this.type.ToString() + " " + this.Data;
 		}
 		
 		#region Public properties
@@ -84,9 +86,14 @@ namespace ZBar
 		/// </value>
 		public string Data{
 			get{
-				return this.data;
+				return System.Text.Encoding.UTF8.GetString(this.rawData);
 			}
 		}
+
+        /// <summary>
+        /// Raw symbol
+        /// </summary>
+        public byte[] RawData { get => rawData; }
 
 		/// <value>
 		/// Get a symbol confidence metric. 
